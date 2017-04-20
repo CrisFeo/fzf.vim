@@ -535,12 +535,11 @@ endfunction
 function! s:format_buffer(b)
   let name = bufname(a:b)
   let name = empty(name) ? '[No Name]' : fnamemodify(name, ":~:.")
-  let flag = a:b == bufnr('')  ? s:blue('%', 'Conditional') :
-          \ (a:b == bufnr('#') ? s:magenta('#', 'Special') : ' ')
-  let modified = getbufvar(a:b, '&modified') ? s:red(' [+]', 'Exception') : ''
-  let readonly = getbufvar(a:b, '&modifiable') ? '' : s:green(' [RO]', 'Constant')
-  let extra = join(filter([modified, readonly], '!empty(v:val)'), '')
-  return s:strip(printf("[%s] %s\t%s\t%s", s:yellow(a:b, 'Number'), flag, name, extra))
+  let flag = a:b == bufnr('')  ? s:red('%', 'Statement') :
+          \ (a:b == bufnr('#') ? s:yellow('#', 'Type') : '')
+  let modified = getbufvar(a:b, '&modified')   ? s:red('+', 'Statement')  : ''
+  let readonly = !getbufvar(a:b, '&modifiable') ? s:green('•', 'String') : ''
+  return s:strip(printf("%s %s %s %s", flag, name, modified, readonly))
 endfunction
 
 function! s:sort_buffers(...)
