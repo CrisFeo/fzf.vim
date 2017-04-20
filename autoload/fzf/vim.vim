@@ -617,7 +617,7 @@ endfunction
 
 " ag command suffix, [options]
 function! fzf#vim#ag_raw(command_suffix, ...)
-  return call('fzf#vim#grep', extend(['ag --nogroup --column --color '.a:command_suffix, 1], a:000))
+  return call('fzf#vim#grep', extend(['ag --nogroup '.a:command_suffix, 1], a:000))
 endfunction
 
 " command, with_column, [options]
