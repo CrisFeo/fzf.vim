@@ -517,7 +517,7 @@ function! s:bufopen(lines)
   if len(a:lines) < 2
     return
   endif
-  let b = matchstr(a:lines[1], '\[\zs[0-9]*\ze\]')
+  let b = matchstr(a:lines[1], '(\zs[0-9]*\ze)')
   if empty(a:lines[0]) && get(g:, 'fzf_buffers_jump')
     let [t, w] = s:find_open_window(b)
     if t
@@ -535,11 +535,12 @@ endfunction
 function! s:format_buffer(b)
   let name = bufname(a:b)
   let name = empty(name) ? '[No Name]' : fnamemodify(name, ":~:.")
+  let number = s:black('('.a:b.')', 'Comment')
   let flag = a:b == bufnr('')  ? s:red('%', 'Statement') :
           \ (a:b == bufnr('#') ? s:yellow('#', 'Type') : '')
   let modified = getbufvar(a:b, '&modified')   ? s:red('+', 'Statement')  : ''
   let readonly = !getbufvar(a:b, '&modifiable') ? s:green('•', 'String') : ''
-  return s:strip(printf("%s %s %s %s", flag, name, modified, readonly))
+  return s:strip(printf("%s %s %s %s%s", flag, name, number, modified, readonly))
 endfunction
 
 function! s:sort_buffers(...)
